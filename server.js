@@ -2,13 +2,6 @@ const http = require('http'),
 	url = require('url'),
 	fs = require('fs');
 
-// fs.readFile('input.txt', (err, data) => {
-// 	if (err) {
-// 		throw err;
-// 	}
-// 	console.log('File content' + data.toString);
-// });
-
 http
 	.createServer(function (request, response) {
 		let addr = request.url,
