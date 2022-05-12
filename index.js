@@ -1,7 +1,9 @@
-const express = require('express');
-const app = express();
+const express = require('express'),
+	morgan = require('morgan');
 
 const bodyParser = require('body-parser');
+
+const app = express();
 
 let topMovies = [
 	{
@@ -75,18 +77,29 @@ let topMovies = [
 		director: 'Yoshiyuki Momose',
 	},
 ];
+//	Morgan middleware - logs request
+app.use(morgan('common'));
 
 //	GET requests
-app.get('/movies', (request, response) => {
-	response.json(topMovies);
-});
-
 app.get('/', (request, response) => {
 	response.send('Welcome to the Animate');
 });
 
+app.get('/movies', (request, response) => {
+	response.json(topMovies);
+});
+
 app.get('/documentation', (request, response) => {
 	response.sendFile('/public/documentation.html', { root: __dirname });
+});
+
+//	Serving Static Files - Documentation.html file
+app.use(express.static('public'));
+
+// 	Error handling
+app.use((err, req, res, next) => {
+	console.error(err.stack);
+	res.status(500).send('Something broke!');
 });
 
 app.listen(8080, () => {
