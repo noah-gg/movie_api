@@ -4,6 +4,13 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!--Bootstrap CSS stylesheet-->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous"
+		/>
 		<title>myFlix</title>
 	</head>
 	<body>
@@ -15,5 +22,176 @@
 			allows users to sign up / deregister, update user information and create /
 			modify a list of their favourite movies.
 		</p>
+		<div class="table-responsive-sm">
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th>Description</th>
+						<th>URL Endpoint</th>
+						<th>HTTP Method</th>
+						<th>Query parameters</th>
+						<th>Request body data format</th>
+						<th>Response body data format</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>Return a list of all movies to the user</td>
+						<td>/movies</td>
+						<td>GET</td>
+						<td>None</td>
+						<td>None</td>
+						<td>A JSON object holding all data about all the movies</td>
+					</tr>
+
+					<tr>
+						<td>Return data about single movie by title to user</td>
+						<td>/movies/[title]</td>
+						<td>GET</td>
+						<td>:title</td>
+						<td>None</td>
+						<td>
+							A JSON object holding all data about a selected movie
+							<pre><code>
+{ 
+	title:"Bubble", 
+	description:" ",
+	director:"Tetsuro Araki", 
+	genre:"Japanese" "Sci-fi Films" "Romance Anime",
+}
+							</code></pre>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Return data about genre</td>
+						<td>/movies/genre/[genreName]</td>
+						<td>GET</td>
+						<td>:genre</td>
+						<td>None</td>
+						<td>
+							A JSON object holding all data about a selected genre
+							<pre><code>
+{ 
+	genre:"Sci-fi Films",
+	description: " ",
+}
+							</code></pre>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Return data about director</td>
+						<td>movies/director/[directorName]</td>
+						<td>GET</td>
+						<td>:director</td>
+						<td>None</td>
+						<td>
+							A JSON object holding all data about a selected director
+							<pre><code>
+{ 
+	director:"Tetsuro Araki",
+	bio: " ",
+}
+							</code></pre>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Allow new users to register</td>
+						<td>/users</td>
+						<td>POST</td>
+						<td>None</td>
+						<td>
+							A JSON object holding data about the user to add, structured like:
+							<pre><code>
+{
+	id: 1,
+	userName: " ",
+	fullName: " ",
+	emailAddress: " ",
+	favourites: [],
+}
+							</code></pre>
+						</td>
+						<td>
+							A JSON object holding data about the user that was added,
+							structured like:
+							<pre><code>
+{
+	id: 1,
+	userName: " ",	
+	fullName: " ",
+	emailAddress: " ",
+	favourites: [],
+}
+							</code></pre>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Allow users to update their user info</td>
+						<td>/users/[userName]</td>
+						<td>PUT</td>
+						<td>:userName</td>
+						<td>Data containing old user information</td>
+						<td>
+							A text message indicating the user information was succesfully
+							updated.
+						</td>
+					</tr>
+
+					<tr>
+						<td>Allows existing user to deregister</td>
+						<td>/users/[userName]/delete</td>
+						<td>DELETE</td>
+						<td>:userName</td>
+						<td>None</td>
+						<td>
+							A text message indicating the user the account has been deleted.
+						</td>
+					</tr>
+
+					<tr>
+						<td>Allow users to add movie to favourites</td>
+						<td>/users/[userName]/favourites</td>
+						<td>POST</td>
+						<td>:userName :favourites</td>
+						<td>None</td>
+						<td>
+							A text message indicating movie was succesfully added to
+							favourites.
+						</td>
+					</tr>
+
+					<tr>
+						<td>Allow users to delete movie from favourites</td>
+						<td>/users/[userName]/favourites</td>
+						<td>DELETE</td>
+						<td>:userName :favourites</td>
+						<td>None</td>
+						<td>A text message indicating movie is removed from favourites.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!--jQuery, Popper.js and Bootstrap.js-->
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+			integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+			crossorigin="anonymous"
+		></script>
 	</body>
 </html>
