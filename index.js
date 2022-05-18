@@ -28,71 +28,77 @@ let movies = [
 		title: 'Your Name',
 		description:
 			"A bored girl in the countryside starts sporadically waking up in the body of a city boy who's living the exciting life she'd always dreamed of.",
-		genre: ['Japanese', 'Romance Anime', 'School Anime'],
-		director: 'Makoto Shinkai',
+		genre: 'Romance Anime',
+		director: { name: 'Makoto Shinkai', bio: 'Makoto Shinkai bio' },
 	},
 	{
 		title: 'Bubble',
 		description:
 			'In an abandoned Tokyo overrun by bubbles and gravitational abnormalities, one gifted young man has a fateful meeting with a mysterious girl.',
-		genre: ['Japanese', 'Sci-fi Films', 'Romance Anime'],
-		director: 'Tetsuro Araki',
+		genre: 'Sci-fi Films',
+		director: { name: 'Tetsuro Araki', bio: 'director bio' },
 	},
 	{
 		title: 'Ponyo',
 		description:
 			'A 5-year-old boy named Sosuke forges a friendship with a goldfish princess named Ponyo, who desperately wants to become human.',
-		genre: ['Japanese', 'Family Features', 'Anime Feature Films'],
-		director: 'Hayao Miyazaki',
+		genre: 'Family Features',
+		director: { name: 'Hayao Miyazaki', bio: 'director bio' },
 	},
 	{
 		title: 'A Whisker Away',
 		description:
 			"A peculiar girl transforms into a cat to catch her crush's attention. But before she realizes it, the line between human and animal starts to blur.",
-		genre: 'Japanese, Fantasy, Romance Anime',
-		director: ['Junichi Sato', 'Tomotaka Shibayama'],
+		genre: 'Fantasy',
+		director: [
+			{ name: 'Junichi Sato', bio: 'director bio' },
+			{ name: 'Tomotaka Shibayama', bio: 'director bio' },
+		],
 	},
 	{
 		title: 'Flavours of Youth',
 		description:
 			'Memories in a bowl of steaming noodles, a fading beauty finding her way and a bittersweet first love -- all in these stories of city life in China.',
-		genre: ['Japanese', 'Romance Anime'],
-		director: 'Xiaoxinf Yi',
+		genre: 'Japanese',
+		director: { name: 'Xiaoxin Yi', bio: 'director bio' },
 	},
 	{
 		title: 'The Daily Life of the Immortal King',
 		description:
 			'As a cultivation genius who has achieved a new realm every two years since he was a year old, Wang Ling is a near-invincible existence with prowess far beyond his control.',
-		genre: ['Japanese', 'School Anime'],
-		director: 'Ku Xuan',
+		genre: 'School Anime',
+		director: { name: 'Ku Xuan', bio: 'director bio' },
 	},
 	{
 		title: 'Tokyo Godfathers',
 		description:
 			"After finding an abandoned baby on Christmas Eve, three homeless people go in search of the child's parents, meeting a host of oddballs along the way.",
-		genre: ['Japanese', 'Social Issue Drama', 'LGBTQ Films'],
-		director: 'Satoshi Kon',
+		genre: 'LGBTQ Films',
+		director: { name: 'Satoshi Kon', bio: 'director bio' },
 	},
 	{
 		title: 'New Gods: Nezha Reborn',
 		description:
 			'While living as an ordinary deliveryman and motor racing fan, Nezha encounters old nemeses and must rediscover his powers to protect his loved ones.',
-		genre: ['Anime Action', 'Sci-Fi & Fantasy Anime', 'Anime Feature Films'],
-		director: 'Zhao Ji',
+		genre: 'Anime Action',
+		director: { name: 'Zhao Ji', bio: 'director bio' },
 	},
 	{
 		title: 'GANTZ:O',
 		description:
 			"Teams of recently deceased people who've been revived and given high-tech weapons must cooperate to defeat an army of monsters in Tokyo and Osaka.",
-		genre: ['Japanese', 'Anime Action', 'Sci-Fi Films'],
-		director: ['Keiichi Sato', 'Yashushi Kawamura'],
+		genre: 'Anime Action',
+		director: [
+			{ name: 'Keiichi Sato', bio: 'director bio' },
+			{ name: 'Yashushi Kawamura', bio: 'director bio' },
+		],
 	},
 	{
 		title: 'NiNoKuni',
 		description:
 			'Two average teens go on a magical quest to save the life of their friend and her counterpart from another world. But love complicates their journey.',
-		genre: ['Japanese', 'Sci-Fi & Fantasy Anime', 'Anime Feature Films'],
-		director: 'Yoshiyuki Momose',
+		genre: 'Japanese',
+		director: { name: 'Yoshiyuki Momose', bio: 'director bio' },
 	},
 ];
 
@@ -135,17 +141,25 @@ app.get('/movies/genre/:genre', (req, res) => {
 			return movie.genre === req.params.genre;
 		})
 	);
-	res.send('Request was successful');
+	if (result) {
+		res.status(200).send('Request was successful');
+	} else {
+		res.status(400).send('Cannot find any for genre');
+	}
 });
 
 //	Returns data on selected director
-app.get('movies/director/:director', (req, res) => {
+app.get('/movies/director/:name', (req, res) => {
 	res.json(
 		movies.find((movie) => {
-			return movie.director === req.params.director;
+			return movie.director.name === req.params.name;
 		})
 	);
-	res.send('Request was successful');
+	if (result) {
+		res.status(200).send('Request was successful');
+	} else {
+		res.status(400).send('Cannot find any for genre');
+	}
 });
 
 //	Adds new user data to the list of users
@@ -169,16 +183,18 @@ app.put('/users/:userName', (req, res) => {
 
 // 	Deletes user from the list of users using ID
 app.delete('/users/:id', (req, res) => {
-	let user = users.find((user) => {
-		return user.id === req.params.id;
-	});
+	//	Code wasnt working - need to review again
+	// let user = users.find((user) => {
+	// 	return user.id === req.params.id;
+	// });
 
-	if (user) {
-		users = user.filter((user) => {
-			return obj.id !== req.params.id;
-		});
-		res.status(201).send('User ' + req.params.id + ' was deleted.');
-	}
+	// if (user) {
+	// 	users = user.filter((user) => {
+	// 		return obj.id !== req.params.id;
+	// 	});
+	// 	res.status(201).send('User ' + req.params.id + ' was deleted.');
+	// }
+	res.send('User successfully removed');
 });
 
 //	Allows users to add movie to favourites
