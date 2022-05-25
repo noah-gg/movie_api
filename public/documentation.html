@@ -55,10 +55,20 @@
 							A JSON object holding all data about a selected movie
 							<pre><code>
 { 
-	title:"Bubble", 
-	description:" ",
-	director:"Tetsuro Araki", 
-	genre:"Japanese" "Sci-fi Films" "Romance Anime",
+	_id: ObjectId" " 
+	Title: "Bubble", 
+	Description:" ",
+	Director: {
+		Name: "Tetsuro Araki", 
+		Bio: "director and animator from Japan"
+		BorthYear: "1976"
+	},
+	Genre: {
+		Name: "Sci-fi Films",
+		Description: "film genre about science fiction"
+	},
+	ImagePath: "http..."
+	Featured: false
 }
 							</code></pre>
 						</td>
@@ -74,8 +84,10 @@
 							A JSON object holding all data about a selected genre
 							<pre><code>
 { 
-	genre:"Sci-fi Films",
-	description: " ",
+	Genre: {
+		Name: "Sci-fi Films",
+		Description: "film genre about science fiction"
+	}
 }
 							</code></pre>
 						</td>
@@ -91,8 +103,11 @@
 							A JSON object holding all data about a selected director
 							<pre><code>
 { 
-	director:"Tetsuro Araki",
-	bio: " ",
+	Director: {
+		Name: "Tetsuro Araki", 
+		Bio: "director and animator from Japan"
+		BorthYear: "1976"
+	}
 }
 							</code></pre>
 						</td>
@@ -107,11 +122,16 @@
 							A JSON object holding data about the user to add, structured like:
 							<pre><code>
 {
-	id: 1,
-	userName: " ",
-	fullName: " ",
-	emailAddress: " ",
-	favourites: [],
+	_id: 1,
+	Username : " ",
+	Password : " ",
+	Email : " ",
+	Birthday : " "),
+	FavouriteMovies : [
+		ObjectId("01"),
+		ObjectId("02"),
+		ObjectId("03")
+	]
 }
 							</code></pre>
 						</td>
@@ -120,11 +140,16 @@
 							structured like:
 							<pre><code>
 {
-	id: 1,
-	userName: " ",	
-	fullName: " ",
-	emailAddress: " ",
-	favourites: [],
+	_id: 1,
+	Username : " ",
+	Password : " ",
+	Email : " ",
+	Birthday : " "),
+	FavouriteMovies : [
+		ObjectId("01"),
+		ObjectId("02"),
+		ObjectId("03")
+	]
 }
 							</code></pre>
 						</td>
