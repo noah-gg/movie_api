@@ -42,33 +42,51 @@
 						<td>GET</td>
 						<td>None</td>
 						<td>None</td>
-						<td>A JSON object holding all data about all the movies</td>
+						<td>
+							A JSON object holding all data about all the movies
+							<pre><code>
+{  
+	Title: String, 
+	Description: String,
+	Director: {
+		Name: String, 
+		Bio: String
+		BirthYear: Date
+	},
+	Genre: {
+		Name: String,
+		Description: String
+	},
+	ImagePath: String,
+	Featured: Boolean
+}
+							</code></pre>
+						</td>
 					</tr>
 
 					<tr>
 						<td>Return data about single movie by title to user</td>
-						<td>/movies/[title]</td>
+						<td>/movies/:Title</td>
 						<td>GET</td>
-						<td>:title</td>
+						<td>:Title</td>
 						<td>None</td>
 						<td>
 							A JSON object holding all data about a selected movie
 							<pre><code>
-{ 
-	_id: ObjectId" " 
-	Title: "Bubble", 
-	Description:" ",
+{  
+	Title: String, 
+	Description: String,
 	Director: {
-		Name: "Tetsuro Araki", 
-		Bio: "director and animator from Japan"
-		BorthYear: "1976"
+		Name: String, 
+		Bio: String
+		BirthYear: Date
 	},
 	Genre: {
-		Name: "Sci-fi Films",
-		Description: "film genre about science fiction"
+		Name: String,
+		Description: String
 	},
-	ImagePath: "http..."
-	Featured: false
+	ImagePath: String,
+	Featured: Boolean
 }
 							</code></pre>
 						</td>
@@ -76,17 +94,17 @@
 
 					<tr>
 						<td>Return data about genre</td>
-						<td>/movies/genre/[genreName]</td>
+						<td>/movies/Genre/:Name</td>
 						<td>GET</td>
-						<td>:genre</td>
+						<td>:Name</td>
 						<td>None</td>
 						<td>
 							A JSON object holding all data about a selected genre
 							<pre><code>
 { 
 	Genre: {
-		Name: "Sci-fi Films",
-		Description: "film genre about science fiction"
+		Name: String,
+		Description: String
 	}
 }
 							</code></pre>
@@ -95,18 +113,18 @@
 
 					<tr>
 						<td>Return data about director</td>
-						<td>movies/director/[directorName]</td>
+						<td>movies/Director/:Name</td>
 						<td>GET</td>
-						<td>:director</td>
+						<td>:Name</td>
 						<td>None</td>
 						<td>
 							A JSON object holding all data about a selected director
 							<pre><code>
 { 
 	Director: {
-		Name: "Tetsuro Araki", 
-		Bio: "director and animator from Japan"
-		BorthYear: "1976"
+		Name: String, 
+		Bio: String,
+		BirthYear: Date
 	}
 }
 							</code></pre>
@@ -122,16 +140,10 @@
 							A JSON object holding data about the user to add, structured like:
 							<pre><code>
 {
-	_id: 1,
-	Username : " ",
-	Password : " ",
-	Email : " ",
-	Birthday : " "),
-	FavouriteMovies : [
-		ObjectId("01"),
-		ObjectId("02"),
-		ObjectId("03")
-	]
+	Username: {type: String, required: true},
+	Password: {type: String, required: true},
+	Email: {type: String, required: true},
+	Birthday: Date,
 }
 							</code></pre>
 						</td>
@@ -140,16 +152,10 @@
 							structured like:
 							<pre><code>
 {
-	_id: 1,
-	Username : " ",
-	Password : " ",
-	Email : " ",
-	Birthday : " "),
-	FavouriteMovies : [
-		ObjectId("01"),
-		ObjectId("02"),
-		ObjectId("03")
-	]
+	Username: {type: String, required: true},
+	Password: {type: String, required: true},
+	Email: {type: String, required: true},
+	Birthday: Date,
 }
 							</code></pre>
 						</td>
@@ -157,21 +163,22 @@
 
 					<tr>
 						<td>Allow users to update their user info</td>
-						<td>/users/[userName]</td>
+						<td>/users/:Username</td>
 						<td>PUT</td>
-						<td>:userName</td>
+						<td>:Username</td>
 						<td>Data containing old user information</td>
 						<td>
-							A text message indicating the user information was succesfully
-							updated.
+							{ Username: {type: String, required: true}, Password: {type:
+							String, required: true}, Email: {type: String, required: true},
+							Birthday: Date, }
 						</td>
 					</tr>
 
 					<tr>
 						<td>Allows existing user to deregister</td>
-						<td>/users/[id]</td>
+						<td>/users/:Username</td>
 						<td>DELETE</td>
-						<td>:userName</td>
+						<td>:Username</td>
 						<td>None</td>
 						<td>
 							A text message indicating the user the account has been deleted.
@@ -180,7 +187,7 @@
 
 					<tr>
 						<td>Allow users to add movie to favourites</td>
-						<td>/users/[userName]/favourites</td>
+						<td>/users/:Username/movies/:MovieID</td>
 						<td>POST</td>
 						<td>:userName :favourites</td>
 						<td>None</td>
@@ -192,7 +199,7 @@
 
 					<tr>
 						<td>Allow users to delete movie from favourites</td>
-						<td>/users/[userName]/favourites</td>
+						<td>/users/:Username/movies/:MovieID</td>
 						<td>DELETE</td>
 						<td>:userName :favourites</td>
 						<td>None</td>
