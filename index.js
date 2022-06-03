@@ -10,7 +10,7 @@ const Movies = Models.Movie; // Refer to movie model defined in models.js
 const Users = Models.User; // Refer to user model defined in models.js
 
 //	Connects to database
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+mongoose.connect(process.env.CONNECTION_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
