@@ -16,8 +16,37 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 });
 
 const app = express();
+
+// 	Allows requests from all origins
+const cors = require('cors');
+app.use(cors());
+
+// 	Only certain origins allowed access to make requests
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+// app.use(
+// 	cors({
+// 		origin: (origin, callback) => {
+// 			if (!origin) return callback(null, true);
+// 			if (allowedOrigins.indexOf(origin) === -1) {
+// 				//	if a specific origin isnt found on the list of allowed origins
+// 				let message =
+// 					'The CORS policy for this application doesnt allow access from origin ' +
+// 					origin;
+// 				return callback(new Error(message), false);
+// 			}
+// 			return callback(null, true);
+// 		},
+// 	})
+// );
+
+// 	Import express validator library (server-side validation)
+const { check, validationResult } = require('express-validator');
+
+//	body-parser
 app.use(bodyParser.json()); //	Body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//	middlewares
 app.use(morgan('common'));
 app.use(express.static('public'));
 
@@ -122,44 +151,79 @@ app.get(
 );
 
 //	Adds new user data to the list of users
-app.post('/users', (req, res) => {
-	Users.findOne({ Username: req.body.Username })
-		.then((user) => {
-			if (user) {
-				return res.status(400).send(req.body.Username + ' already exists');
-			} else {
-				Users.create({
-					Username: req.body.Username,
-					Password: req.body.Password,
-					Email: req.body.Email,
-					Birthday: req.body.Birthday,
-				})
-					.then((user) => {
-						res.status(201).json(user);
+app.post(
+	'/users',
+	[
+		check('Username', 'Username is required').isLength({ min: 5 }),
+		check(
+			'Username',
+			'Username contains non alphanumeric characters - not allowed.'
+		).isAlphanumeric(),
+		check('Password', 'Password is required').not().isEmpty(),
+		check('Email', 'Email does not appear to be valid').isEmail(),
+	],
+	(req, res) => {
+		// 	checks the validation object for errors
+		let errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() });
+		}
+		let hashedPassword = Users.hashPassword(req.body.Password);
+		Users.findOne({ Username: req.body.Username })
+			// search to see if user with the requested username already exitsts
+			.then((user) => {
+				if (user) {
+					//	if user is found, sends a response it already exists
+					return res.status(400).send(req.body.Username + ' already exists');
+				} else {
+					Users.create({
+						Username: req.body.Username,
+						Password: hashedPassword,
+						Email: req.body.Email,
+						Birthday: req.body.Birthday,
 					})
-					.catch((error) => {
-						console.error(error);
-						res.status(500).send('Error: ' + error);
-					});
-			}
-		})
-		.catch((error) => {
-			console.error(error);
-			res.status(500).send('Error: ' + error);
-		});
-});
+						.then((user) => {
+							res.status(201).json(user);
+						})
+						.catch((error) => {
+							console.error(error);
+							res.status(500).send('Error: ' + error);
+						});
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				res.status(500).send('Error: ' + error);
+			});
+	}
+);
 
 //	Allows users to update their info
 app.put(
 	'/users/:Username',
 	passport.authenticate('jwt', { session: false }),
+	[
+		check('Username', 'Username is required').isLength({ min: 5 }),
+		check(
+			'Username',
+			'Username contains non alphanumeric characters - not allowed.'
+		).isAlphanumeric(),
+		check('Password', 'Password is required').not().isEmpty(),
+		check('Email', 'Email does not appear to be valid').isEmail(),
+	],
 	(req, res) => {
+		// 	checks the validation object for errors
+		let errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() });
+		}
+		let hashedPassword = Users.hashPassword(req.body.Password);
 		Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
 				$set: {
 					Username: req.body.Username,
-					Password: req.body.Password,
+					Password: hashedPassword,
 					Email: req.body.Email,
 					Birthday: req.body.Birthday,
 				},
