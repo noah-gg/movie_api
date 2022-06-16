@@ -57,29 +57,21 @@ const passport = require('passport');
 require('./passport');
 
 //	GET requests
-app.get(
-	'/',
-	passport.authenticate('jwt', { session: false }),
-	(request, response) => {
-		response.send('Welcome to the Animate');
-	}
-);
+app.get('/', (request, response) => {
+	response.send('Welcome to the Animate');
+});
 
 //	Returns a list of all movies
-app.get(
-	'/movies',
-	passport.authenticate('jwt', { session: false }),
-	(req, res) => {
-		Movies.find()
-			.then((movies) => {
-				res.status(200).json(movies);
-			})
-			.catch((err) => {
-				console.error(err);
-				res.status(500).send('Error: ' + err);
-			});
-	}
-);
+app.get('/movies', (req, res) => {
+	Movies.find()
+		.then((movies) => {
+			res.status(200).json(movies);
+		})
+		.catch((err) => {
+			console.error(err);
+			res.status(500).send('Error: ' + err);
+		});
+});
 
 //	Get documentation
 app.get('/documentation', (req, res) => {
