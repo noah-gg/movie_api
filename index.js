@@ -146,6 +146,32 @@ app.get(
 	}
 );
 
+// Get all user by username
+app.get(
+	'/users/:Username',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Users.findOne({ Username: req.params.Username })
+			.then((user) => {
+				if (user) {
+					respData = {
+						Username: user.Username,
+						Email: user.Email,
+						Birthday: user.Birthday,
+						FavouriteMovies: user.FavouriteMovies,
+					};
+					res.status(201).json(respData);
+				} else {
+					res.status(404).send('User Not Found');
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
+
 //	Adds new user data to the list of users
 app.post(
 	'/users',
